@@ -38,25 +38,13 @@ with open('input.txt', 'r') as file:
                 continue
             first_dist = first_pos[0] - second_pos[0]
             second_dist = first_pos[1] - second_pos[1]
-            # print('first_pos')
-            # print(first_pos)
-            # print('second_pos')
-            # print(second_pos)
-            # print('first_dist')
-            # print(first_dist)
-            # print('second_dist')
-            # print(second_dist)
-            
-            firstAntiNode = (first_pos[0] + first_dist, first_pos[1] + second_dist)
-            secondAntiNode = (second_pos[0] - first_dist, second_pos[1] - second_dist)
-            if (firstAntiNode in antinodes) :
-                antinodes[firstAntiNode] += 1
-            else :
-                antinodes[firstAntiNode] = 1
-            if (secondAntiNode in antinodes) :
-                antinodes[secondAntiNode] += 1
-            else :
-                antinodes[secondAntiNode] = 1
+            for i in range(- len(city_map), len(city_map)):
+                possible_antinode = (first_pos[0] + (first_dist * i), first_pos[1] + (second_dist * i))
+                if (possible_antinode in antinodes) :
+                    antinodes[possible_antinode] += 1
+                else :
+                    antinodes[possible_antinode] = 1
+
     toDel = []
     for antinode in antinodes:
         if (antinode[0] < 0 or antinode[1] < 0 or antinode[0] >= len(city_map) or antinode[1] >= len(city_map[0])):
