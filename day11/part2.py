@@ -2,11 +2,13 @@ import time
 
 stone_dict = {}
 
+blink_25_dict = {}
 
 def expand_stone(stone):
     new_stones = []
 
     if (stone in stone_dict):
+        # print("using stone dict")
         return stone_dict[stone]
     
 
@@ -28,6 +30,10 @@ def expand_stone(stone):
     
     return new_stones
 def do_blinks(stones, blinks, should_print):
+    if (stones[0] in blink_25_dict and len(stones) == 1) :
+        return blink_25_dict[stones[0]]
+    original_stone = stones[0]
+
     original_blinks = blinks
     before = time.time()
 
@@ -42,6 +48,8 @@ def do_blinks(stones, blinks, should_print):
         stones = [str for str in new_stones if str != ""]
         blinks -= 1
         # print(stones)
+
+    blink_25_dict[original_stone] = stones
     return stones
 
 with open('input.txt', 'r') as file: 
@@ -57,9 +65,20 @@ with open('input.txt', 'r') as file:
         more_stones.append(do_blinks([stone], 25, False))
     print("sub stones level 2")
     total = 0
+    total_second_stones =  len(more_stones)
+    current_second_stones = 0
+    before = time.time()
     for stoneList in more_stones: 
+        if current_second_stones % 10000 == 0:
+            print(str(current_second_stones) + " / " + str(total_second_stones))
+            timeDiff = time.time() - before
+            estRemainingSeconds = ((total_second_stones - current_second_stones) / 10000 ) * timeDiff
+            print("est remaining seconds: " +  str(estRemainingSeconds))
+            before = time.time()
         for s in stoneList:
             total += len(do_blinks([stone], 25, False))
+        current_second_stones += 1
+
 
 
 
